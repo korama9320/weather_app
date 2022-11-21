@@ -8,8 +8,18 @@ class WeatherModel {
     ApiCalls apiCalls = ApiCalls(
         'https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.long}&appid=21ce8cad5daf9c4330138fa80bb819e8&units=metric');
 
-    var Data = await apiCalls.getData();
-    return Data;
+    var data = await apiCalls.getData();
+    return data;
+  }
+
+  Future<dynamic> getCityWeather(String city) async {
+    Location location = Location();
+    await location.getCurrentLocation();
+    ApiCalls apiCalls = ApiCalls(
+        'https://api.openweathermap.org/data/2.5/weather?q=$city&appid=21ce8cad5daf9c4330138fa80bb819e8&units=metric');
+
+    var data = await apiCalls.getData();
+    return data;
   }
 
   String getWeatherIcon(int condition) {

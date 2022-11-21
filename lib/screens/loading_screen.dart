@@ -14,11 +14,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
     var data = await weather.getWeatherData();
     // ignore: use_build_context_synchronously
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => LocationScreen(
-                  locationWeather: data,
-                )));
+      context,
+      MaterialPageRoute(
+        builder: (context) => LocationScreen(
+          locationWeather: data,
+        ),
+      ),
+    );
   }
 
 //https://api.openweathermap.org/data/2.5/weather?q={city}&appid=21ce8cad5daf9c4330138fa80bb819e8&units=metric

@@ -17,8 +17,8 @@ class _LocationScreenState extends State<LocationScreen> {
   late String msg;
 
   WeatherModel weather = WeatherModel();
-  void updateUI(dynamic Data) {
-    if (Data == null) {
+  void updateUI(dynamic data) {
+    if (data == null) {
       weicon = "";
       temp = 0;
       name = "";
@@ -26,11 +26,11 @@ class _LocationScreenState extends State<LocationScreen> {
       return;
     } else {
       setState(() {
-        int condition = Data['weather'][0]['id'];
+        int condition = data['weather'][0]['id'];
         weicon = weather.getWeatherIcon(condition);
-        double temper = Data['main']['temp'];
+        double temper = data['main']['temp'];
         temp = temper.toInt();
-        name = Data['name'];
+        name = data['name'];
         msg = weather.getMessage(temp);
       });
     }
@@ -74,11 +74,17 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return CityScreen();
-                      }));
+                    onPressed: () async {
+                      var city = await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) {
+                          return CityScreen();
+                        }),
+                      );
+                      if (city != null) {
+                        var citydata = await weather.getCityWeather(city);
+                        updateUI(citydata);
+                      }
                     },
                     child: const Icon(
                       Icons.location_city,
@@ -105,7 +111,7 @@ class _LocationScreenState extends State<LocationScreen> {
               Padding(
                 padding: const EdgeInsets.only(right: 15.0),
                 child: Text(
-                  '$msg $name',
+                  '$msg in $name',
                   textAlign: TextAlign.right,
                   style: kMessageTextStyle,
                 ),
